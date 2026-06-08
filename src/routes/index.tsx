@@ -26,9 +26,11 @@ const steps: DeployStep[] = [
 
 const deployDirectory = '/home/ziczac/Sites/cap-deploy/beohub'
 const branchPattern = /^(?!-)[A-Za-z0-9._/-]+$/
+const deployTokenStorageKey = 'beohub-deploy-token'
 
 function DeployHome() {
   const [branch, setBranch] = useState('main')
+  const [deployToken, setDeployToken] = useState('')
   const [status, setStatus] = useState<DeployStatus>('idle')
   const [logs, setLogs] = useState<Array<DeployLog>>([])
   const [runCount, setRunCount] = useState(1044)
@@ -52,6 +54,19 @@ function DeployHome() {
     consoleElement.scrollTop = consoleElement.scrollHeight
   }, [logs])
 
+  useEffect(() => {
+    setDeployToken(window.localStorage.getItem(deployTokenStorageKey) ?? '')
+  }, [])
+
+  useEffect(() => {
+    if (deployToken) {
+      window.localStorage.setItem(deployTokenStorageKey, deployToken)
+      return
+    }
+
+    window.localStorage.removeItem(deployTokenStorageKey)
+  }, [deployToken])
+
   async function startDeploy() {
     if (status === 'running') return
     if (!branchIsValid) {
@@ -68,6 +83,19 @@ function DeployHome() {
       return
     }
 
+    if (!deployToken.trim()) {
+      setStatus('failed')
+      setLogs([
+        {
+          time: formatTime(),
+          stage: 'Deploy',
+          level: 'error',
+          message: 'Deploy token is required.',
+        },
+      ])
+      return
+    }
+
     setStatus('running')
     setRunCount((current) => current + 1)
     setLogs([])
@@ -75,7 +103,10 @@ function DeployHome() {
     try {
       const response = await fetch('/api/deploy', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          Authorization: `Bearer ${deployToken.trim()}`,
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({ branch: branch.trim() }),
       })
 
@@ -183,6 +214,21 @@ function DeployHome() {
               value={deployDirectory}
               aria-label="Deploy directory"
               readOnly
+            />
+          </label>
+
+          <label className="block">
+            <span className="deploy-label mb-2 block text-xs font-extrabold">
+              Deploy token
+            </span>
+            <input
+              className="deploy-input"
+              type="password"
+              value={deployToken}
+              aria-label="Deploy token"
+              autoComplete="current-password"
+              disabled={status === 'running'}
+              onChange={(event) => setDeployToken(event.target.value)}
             />
           </label>
 

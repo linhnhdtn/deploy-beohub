@@ -1,10 +1,14 @@
 import { spawn } from 'node:child_process'
+import { timingSafeEqual } from 'node:crypto'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/api/deploy')({
   server: {
     handlers: {
       POST: async ({ request }) => {
+        const authResult = authorizeDeploy(request)
+        if (authResult) return authResult
+
         if (activeDeploy) {
           return Response.json(
             { error: 'A deploy is already running.' },
@@ -112,6 +116,36 @@ const deployDirectory = '/home/ziczac/Sites/cap-deploy/beohub'
 const branchPattern = /^(?!-)[A-Za-z0-9._/-]+$/
 
 let activeDeploy = false
+
+function authorizeDeploy(request: Request) {
+  const expectedToken = process.env.DEPLOY_TOKEN
+  if (!expectedToken) {
+    return Response.json(
+      { error: 'DEPLOY_TOKEN is not configured on the server.' },
+      { status: 500 },
+    )
+  }
+
+  const authorization = request.headers.get('Authorization') ?? ''
+  const token = authorization.startsWith('Bearer ')
+    ? authorization.slice('Bearer '.length)
+    : ''
+
+  if (!token || !tokensMatch(token, expectedToken)) {
+    return Response.json({ error: 'Invalid deploy token.' }, { status: 401 })
+  }
+
+  return null
+}
+
+function tokensMatch(actual: string, expected: string) {
+  const actualBuffer = Buffer.from(actual)
+  const expectedBuffer = Buffer.from(expected)
+
+  if (actualBuffer.length !== expectedBuffer.length) return false
+
+  return timingSafeEqual(actualBuffer, expectedBuffer)
+}
 
 function getBranch(body: unknown) {
   if (!body || typeof body !== 'object' || !('branch' in body)) return null
