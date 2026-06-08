@@ -139,7 +139,7 @@ function DeployHome() {
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="deploy-repo">GIT@GITHUB.COM:HOANGDVHP99/BEOHUB.GIT</p>
-          <h1 className="m-0 text-3xl font-extrabold tracking-[0] text-[#111827] sm:text-4xl">
+          <h1 className="deploy-title m-0 text-3xl font-extrabold tracking-[0] sm:text-4xl">
             Beohub Deploy
           </h1>
         </div>
@@ -150,17 +150,17 @@ function DeployHome() {
 
       <section className="deploy-panel p-5 sm:p-6">
         <div className="mb-7 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="m-0 text-xl font-extrabold text-[#111827]">
+          <h2 className="deploy-heading m-0 text-xl font-extrabold">
             Start Deploy
           </h2>
-          <p className="m-0 text-sm font-medium text-[#64748b] sm:text-base">
+          <p className="deploy-muted m-0 text-sm font-medium sm:text-base">
             Fetch branch, pull latest code, then run Capistrano deploy
           </p>
         </div>
 
         <div className="space-y-4">
           <label className="block">
-            <span className="mb-2 block text-xs font-extrabold text-[#111827]">
+            <span className="deploy-label mb-2 block text-xs font-extrabold">
               Branch
             </span>
             <input
@@ -174,7 +174,7 @@ function DeployHome() {
           </label>
 
           <label className="block">
-            <span className="mb-2 block text-xs font-extrabold text-[#111827]">
+            <span className="deploy-label mb-2 block text-xs font-extrabold">
               Deploy directory
             </span>
             <input
@@ -199,10 +199,10 @@ function DeployHome() {
 
       <section className="deploy-panel mt-5 p-5 sm:p-6">
         <div className="mb-5">
-          <h2 className="m-0 text-xl font-extrabold text-[#111827]">
+          <h2 className="deploy-heading m-0 text-xl font-extrabold">
             Console Output
           </h2>
-          <p className="m-0 text-base font-semibold text-[#64748b]">
+          <p className="deploy-muted m-0 text-base font-semibold">
             D-{runCount} / {branch.trim() || '-'} / {deployDirectory}
           </p>
         </div>
@@ -217,10 +217,10 @@ function DeployHome() {
                     : ''
                 }`}
               />
-              <h3 className="m-0 text-base font-extrabold text-[#111827]">
+              <h3 className="deploy-heading m-0 text-base font-extrabold">
                 {step.name}
               </h3>
-              <p className="m-0 text-base font-semibold text-[#111827]">
+              <p className="deploy-step-status m-0 text-base font-semibold">
                 {stepStatus(step.name, logs, status)}
               </p>
             </article>

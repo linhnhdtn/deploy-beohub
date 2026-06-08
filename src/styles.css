@@ -163,18 +163,32 @@ pre code {
 .deploy-page {
   width: min(924px, calc(100% - 2rem));
   margin-inline: auto;
+  color: var(--sea-ink);
 }
 
 .deploy-panel {
-  border: 1px solid #d8e0eb;
+  border: 1px solid color-mix(in oklab, var(--line) 72%, #d8e0eb);
   border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  background: var(--surface-strong);
+  box-shadow:
+    0 1px 0 var(--inset-glint) inset,
+    0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+.deploy-title,
+.deploy-heading,
+.deploy-label {
+  color: var(--sea-ink);
+}
+
+.deploy-muted,
+.deploy-step-status {
+  color: var(--sea-ink-soft);
 }
 
 .deploy-repo {
   margin: 0 0 0.25rem;
-  color: #64748b;
+  color: var(--sea-ink-soft);
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -193,32 +207,32 @@ pre code {
 }
 
 .deploy-status-success {
-  background: #dcfce7;
-  color: #059669;
+  background: color-mix(in oklab, #22c55e 18%, transparent);
+  color: color-mix(in oklab, #059669 82%, var(--sea-ink));
 }
 
 .deploy-status-running {
-  background: #dbeafe;
-  color: #2563eb;
+  background: color-mix(in oklab, #3b82f6 18%, transparent);
+  color: color-mix(in oklab, #2563eb 82%, var(--sea-ink));
 }
 
 .deploy-status-idle {
-  background: #f1f5f9;
-  color: #475569;
+  background: color-mix(in oklab, var(--chip-bg) 80%, transparent);
+  color: var(--sea-ink-soft);
 }
 
 .deploy-status-failed {
-  background: #fee2e2;
-  color: #dc2626;
+  background: color-mix(in oklab, #ef4444 18%, transparent);
+  color: color-mix(in oklab, #dc2626 82%, var(--sea-ink));
 }
 
 .deploy-input {
   width: 100%;
   min-height: 36px;
-  border: 1px solid #d8e0eb;
+  border: 1px solid color-mix(in oklab, var(--line) 76%, #d8e0eb);
   border-radius: 6px;
-  background: #ffffff;
-  color: #111827;
+  background: color-mix(in oklab, var(--surface-strong) 88%, transparent);
+  color: var(--sea-ink);
   font-size: 0.8125rem;
   font-weight: 700;
   line-height: 1.4;
@@ -228,8 +242,8 @@ pre code {
 }
 
 .deploy-input:focus {
-  border-color: #2f66ea;
-  box-shadow: 0 0 0 3px rgba(47, 102, 234, 0.14);
+  border-color: var(--lagoon);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--lagoon) 22%, transparent);
 }
 
 .deploy-button {
@@ -265,14 +279,14 @@ pre code {
 .deploy-steps {
   display: grid;
   gap: 10px;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .deploy-step {
   min-height: 92px;
-  border: 1px solid #d8e0eb;
+  border: 1px solid color-mix(in oklab, var(--line) 76%, #d8e0eb);
   border-radius: 8px;
-  background: #ffffff;
+  background: color-mix(in oklab, var(--surface-strong) 92%, transparent);
   padding: 0.75rem;
 }
 
@@ -286,7 +300,7 @@ pre code {
 }
 
 .deploy-step-dot.is-waiting {
-  background: #e2e8f0;
+  background: color-mix(in oklab, var(--sea-ink-soft) 24%, transparent);
 }
 
 .deploy-console {
